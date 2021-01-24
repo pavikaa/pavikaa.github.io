@@ -1,34 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-   <meta charset="UTF-8">
-   <title>Homepage</title>
+  <title>Login page</title>
+  <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+  <link rel="stylesheet" href="styles/style.css" />
 </head>
-
 <body>
-   <header>
-      <h1>My page</h1>
-   </header>
-   <nav>
-      <ul>
-         <li>Home</li>
-         <li><a href="pages/pictures.html">Pictures</a></li>
-         <li><a href="pages/projects.html">Projects</a></li>
-         <li><a href="pages/social.html">Social</a></li>
-      </ul>
-   </nav>
 
-   <main>
-      <article>
-         <h2>Homepage</h2>
-         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua.<br>
-            Consectetur a erat nam at lectus urna duis convallis convallis. Vel orci porta non pulvinar neque laoreet
-            suspendisse interdum. <br>
-            Interdum consectetur libero id faucibus nisl tincidunt eget nullam.</p>
-      </article>
-   </main>
+  <div id="login_div" class="main-div">
+    <h3>Login</h3>
+    <input type="email" placeholder="E-mail" id="email" />
+    <input type="password" placeholder="Password" id="password" />
+    <button onclick="login()">Login to Account</button>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+  <script src="scripts/initializeFirebase.js"></script>
+  <script src="scripts/login.js"></script>
+
 </body>
-
 </html>

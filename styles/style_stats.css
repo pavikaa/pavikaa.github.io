@@ -1,0 +1,43 @@
+.charts
+{
+    display:grid;
+    width: 400px;
+}
+.chart
+{
+    width: 100px; 
+    height: 100px; 
+}
+.item1
+{
+    grid-column: 1 / 2;
+}
+.item2
+{
+    grid-column: 2 / 3;
+}
+.item3
+{
+    grid-column: 3 / 3;
+}
+
+.row1
+{
+    grid-row: 1
+}
+.row2
+{
+    grid-row: 2
+}
+.row3
+{
+    grid-row: 3
+}
+.row4
+{
+    grid-row: 4
+}
+.row5
+{
+    grid-row: 5
+}
