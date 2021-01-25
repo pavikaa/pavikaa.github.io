@@ -48,7 +48,7 @@ teamsRef.on("value", function (snapshot) {
         }
     });
 
-    for (var j = 1; j <= 10; j++) {
+    for (var j = 1; j <= teamNames.length; j++) {
         var chartPlayerNames = [];
         var chartPlayerGames = [];
         var chartPlayerWins = [];
@@ -70,19 +70,38 @@ teamsRef.on("value", function (snapshot) {
             } else
                 counter++;
         }
-var titleIgre,titlePobjede,titleOmjer;
-if(j==1)
-{
-    titleIgre='Igre';
-    titlePobjede='Pobjede';
-    titleOmjer='Omjer pobjeda i igara';
-}
-else
-{
-    titleIgre='';
-    titlePobjede='';
-    titleOmjer='';
-}
+        var titleIgre, titlePobjede, titleOmjer;
+        if (j == 1) {
+            titleIgre = 'Igre';
+            titlePobjede = 'Pobjede';
+            titleOmjer = 'Omjer pobjeda i igara';
+        } else {
+            titleIgre = '';
+            titlePobjede = '';
+            titleOmjer = '';
+        }
+
+
+        var canvas = document.createElement('canvas');
+        canvas.id = 'chart' + j + 1;
+        canvas.classList.add('chart');
+        canvas.classList.add('row' + j);
+        canvas.classList.add('item1');
+        document.getElementById("charts").appendChild(canvas);
+        var canvas = document.createElement('canvas');
+        canvas.id = 'chart' + j + 2;
+        canvas.classList.add('chart');
+        canvas.classList.add('row' + j);
+        canvas.classList.add('item2');
+        document.getElementById("charts").appendChild(canvas);
+        var canvas = document.createElement('canvas');
+        canvas.id = 'chart' + j + 3;
+        canvas.classList.add('chart');
+        canvas.classList.add('row' + j);
+        canvas.classList.add('item3');
+        document.getElementById("charts").appendChild(canvas);
+
+
         var myChart = document.getElementById('chart' + j + 1).getContext('2d');
         var massPopChart = new Chart(myChart, {
             type: 'pie',
@@ -144,3 +163,7 @@ else
         });
     }
 });
+function logout()
+{
+    firebase.auth().signOut();
+}
