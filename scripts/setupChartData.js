@@ -57,7 +57,7 @@ teamsRef.on("value", function (snapshot) {
         for (var l = 0; l < playerNames.length; l++) {
             if (playerNames[l][0] == j) {
                 counter++;
-                console.log(counter);
+
             }
         }
         for (var k = 0; k < counter; k++) {
@@ -66,7 +66,7 @@ teamsRef.on("value", function (snapshot) {
                 chartPlayerGames.push(playerNames[k][2]);
                 chartPlayerWins.push(playerNames[k][3]);
                 chartGameToWinRatio.push(Math.round(100 * playerNames[k][3] / playerNames[k][2]))
-                console.log(chartPlayerNames[k]);
+
             } else
                 counter++;
         }
@@ -163,7 +163,7 @@ teamsRef.on("value", function (snapshot) {
         });
     }
 });
-function logout()
-{
+
+function logout() {
     firebase.auth().signOut();
 }
