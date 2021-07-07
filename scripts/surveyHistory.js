@@ -54,7 +54,7 @@ function loadStats() {
                     document.getElementById("charts").appendChild(canvas);
                     var ctx = document.getElementById("canvas" + questionNumber).getContext('2d');
                     var myChart = new Chart(ctx, {
-                        type: 'bar',
+                        type: 'pie',
                         data: {
                             labels: answers,
                             datasets: [{
