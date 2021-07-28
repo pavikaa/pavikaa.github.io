@@ -20,7 +20,12 @@
         Kreirajte anketu
       </button>
       <a class="btn btn-primary btn-lg ml-3" href="surveyhistory.html" role="button">Povijest anketiranja</a>
+
+      <button type="button" class="btn btn-primary btn-lg ml-3" data-toggle="modal" data-target="#groupsModal"
+        onclick="loadGroups();">
+        Kreirajte grupe
       </button>
+
     </p>
   </div>
 
@@ -60,7 +65,11 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" onclick="newQuestion();">Dodaj pitanje</button>
+          <button type="button" class="btn btn-success mr-auto" onclick="newQuestion();">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg"
+              viewBox="0 0 16 16">
+              <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z" />
+            </svg> Dodaj pitanje</button>
           <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal"
             data-target="#surveyLengthModal" onclick="loadQuestion();">Dalje</button>
         </div>
@@ -92,7 +101,7 @@
     </div>
   </div>
 
-  <!--Access code modal modal-->
+  <!--Access code modal-->
   <div class="modal fade" id="accessCodeModal" tabindex="-1" aria-labelledby="accessCodeLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -111,6 +120,62 @@
       </div>
     </div>
   </div>
+
+
+
+  <!--Groups modal-->
+  <div class="modal fade" id="groupsModal" tabindex="-1" aria-labelledby="groupsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="groupsLabel">Grupe</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="table"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success mr-auto" data-dismiss="modal" data-toggle="modal"
+            data-target="#newGroupModal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg"
+              viewBox="0 0 16 16">
+              <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z" />
+            </svg> Kreiraj novu grupu</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="reload();">Završi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--New Group modal-->
+  <div class="modal fade" id="newGroupModal" tabindex="-1" aria-labelledby="newGroupLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="newGroupLabel">Grupe</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input class="form-control mt-2" placeholder="Unesite naziv grupe" type="text" id="groupName"
+            autocomplete="off" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal" onclick="createGroup();">Kreiraj
+            grupu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

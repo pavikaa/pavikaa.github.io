@@ -45,8 +45,6 @@ function newQuestion() {
         answerCounter = 0;
         createQuestionForm();
         questionCounter++;
-    } else {
-        alert("Neka polja su prazna.");
     }
 }
 
@@ -91,7 +89,7 @@ function loadTime() {
 function uploadToFirebase() {
     var database = firebase.database();
     var user = firebase.auth().currentUser;
-    var code = makecode(6);
+    var code = makecode(6, "Survey");
 
     document.getElementById("code").innerHTML = code;
 
@@ -114,9 +112,65 @@ function uploadToFirebase() {
     }
 }
 
+function createGroup() {
+    var groupName = document.getElementById("groupName").value;
+
+    var groupCode = makecode(6, "Group");
+    var database = firebase.database();
+    var user = firebase.auth().currentUser;
+    var newGroupKey = firebase.database().ref().child('grupe').push().key;
+    if (groupName.length != 0) {
+        database.ref('grupe/' + user.uid + "/" + newGroupKey).set({
+            ime: groupName,
+            kod: groupCode
+        });
+    } else
+        alert("Niste unjeli ime grupe")
+}
 
 function removeAnswer(clickedId) {
     document.getElementById(clickedId.substring(0, clickedId.length - 3)).remove();
+}
+
+function loadGroups() {
+    var checkIfAnyGroupExists = false;
+    var user = firebase.auth().currentUser;
+    firebase.database().ref().child("grupe").child(user.uid).once("value", function (snapshot) {
+        document.getElementById("table").innerHTML = "";
+        var table = document.createElement('table');
+        table.classList.add('table');
+        var tr = document.createElement('tr');
+        var thName = document.createElement('th');
+        thName.innerHTML = "Naziv grupe";
+        var thCode = document.createElement('th');
+        thCode.innerHTML = "Kod grupe";
+        tr.appendChild(thName);
+        tr.appendChild(thCode);
+        table.appendChild(tr);
+
+        snapshot.forEach(function (childSnapshot) {
+            var tr = document.createElement('tr');
+            var tdName = document.createElement('td');
+            tdName.innerHTML = childSnapshot.child("ime").val();
+            var tdCode = document.createElement('td');
+            tdCode.innerHTML = childSnapshot.child("kod").val();
+            tr.appendChild(tdName);
+            tr.appendChild(tdCode);
+            table.appendChild(tr);
+            if (tdName.length != 0 && tdCode.length != 0)
+                checkIfAnyGroupExists = true;
+
+        });
+        if (checkIfAnyGroupExists)
+            document.getElementById("table").appendChild(table);
+        else {
+            var h4 = document.createElement('h4');
+            h4.classList.add('text-center');
+            h4.innerHTML = "Nemate niti jednu grupu";
+            document.getElementById("table").appendChild(h4);
+        }
+    });
+
 }
 
 function createQuestionForm() {
@@ -177,7 +231,7 @@ function createQuestion() {
     document.getElementById("answers").appendChild(newAnswerDiv);
 }
 
-function makecode(length) {
+function makecode(length, purpose) {
     var result = '';
     var characters = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz123456789';
     var charactersLength = characters.length;
@@ -185,11 +239,23 @@ function makecode(length) {
         result += characters.charAt(Math.floor(Math.random() *
             charactersLength));
     }
-    firebase.database().ref().child("ankete").once("value", function (snapshot) {
-        snapshot.forEach(function (childSnapshot) {
-            if (childSnapshot.child("kod").val() == result)
-                makecode(length);
+    if (purpose == "Survey") {
+        firebase.database().ref().child("ankete").once("value", function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                if (childSnapshot.child("kod").val() == result)
+                    makecode(length, "Survey");
+            });
         });
-    });
+    } else {
+        firebase.database().ref().child("grupe").once("value", function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                childSnapshot.forEach(function (groupCodeSnaphot) {
+                    if (groupCodeSnaphot.child("kod").val() == result)
+                        makecode(length, "Group");
+                });
+            });
+
+        });
+    }
     return result;
 }
