@@ -15,9 +15,12 @@ firebase.auth().onAuthStateChanged(function (user) {
 function login() {
   var userEmail = document.getElementById("email").value;
   var userPass = document.getElementById("password").value;
-  firebase.auth().signInWithEmailAndPassword(userEmail, userPass).catch(function (error) {
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    window.alert("Error : " + errorMessage);
-  });
+  if (userEmail != "" && userPass != "") {
+    firebase.auth().signInWithEmailAndPassword(userEmail, userPass).catch(function (error) {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      window.alert("Error : " + errorMessage);
+    });
+  } else
+    window.alert("Neka od polja su prazna.");
 }
