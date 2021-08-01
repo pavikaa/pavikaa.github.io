@@ -2,8 +2,8 @@ var answerCounter = 0;
 var questionCounter = 0;
 var questions = [];
 var answers = [];
+var chosenGroups = [];
 var dateTime, dueDate, surveyLength;
-
 
 function logout() {
     firebase.auth().signOut();
@@ -19,9 +19,70 @@ function reload() {
 
     questions = [];
     answers = [];
+    chosenGroups = [];
     surveyLength = null;
     dateTime = null;
     questionCounter = 0;
+}
+
+function deleteGroup(id) {
+    var user = firebase.auth().currentUser;
+    firebase.database().ref().child("grupe").child(user.uid).child(id).remove();
+
+}
+
+function loadDropdown() {
+    document.getElementById('chooseGroups').innerHTML = "";
+    chosenGroups = [];
+    var checkIfAnyGroupExists = false;
+    var user = firebase.auth().currentUser;
+    var groupName;
+    firebase.database().ref().child("grupe").child(user.uid).once("value", function (snapshot) {
+
+        snapshot.forEach(function (childSnapshot) {
+            groupName = childSnapshot.child("ime").val();
+            var a = document.createElement('a');
+            a.classList.add('dropdown-item');
+            var div = document.createElement('div');
+            div.classList.add('custom-control');
+            div.classList.add('custom-checkbox');
+            var input = document.createElement('input');
+            input.type = "checkbox";
+            input.classList.add('custom-control-input');
+            input.value = groupName;
+            input.id = groupName;
+            var label = document.createElement('label');
+            label.classList.add('custom-control-label');
+            label.setAttribute("for", groupName);
+            label.innerHTML = groupName;
+            div.appendChild(input);
+            div.appendChild(label);
+            a.appendChild(div);
+            document.getElementById('chooseGroups').appendChild(a);
+            if (groupName.length != 0 && groupName.length != 0)
+                checkIfAnyGroupExists = true;
+        });
+        if (checkIfAnyGroupExists) {
+            var a = document.createElement('a');
+            a.classList.add('dropdown-item');
+            var div = document.createElement('div');
+            div.classList.add('custom-control');
+            div.classList.add('custom-checkbox');
+            var input = document.createElement('input');
+            input.type = "checkbox";
+            input.classList.add('custom-control-input');
+            input.id = "allOptions";
+            input.value = "allOptions";
+            var label = document.createElement('label');
+            label.classList.add('custom-control-label');
+            label.setAttribute("for", "allOptions");
+            label.innerHTML = "Sve grupe";
+            div.appendChild(input);
+            div.appendChild(label);
+            a.appendChild(div);
+            document.getElementById('chooseGroups').appendChild(a);
+        }
+    });
 }
 
 function addAnswer() {
@@ -34,9 +95,6 @@ function addAnswer() {
 
     createQuestion();
 }
-
-
-
 
 function newQuestion() {
     loadQuestion();
@@ -64,11 +122,13 @@ function loadQuestion() {
         answers = [];
     } else
         alert("Neka polja su prazna.");
+    chosenGroups = [];
+    $("#chooseGroups input[type='checkbox']:checked").each((_, {
+        value
+    }) => {
+        chosenGroups.push(value);
+    });
 }
-
-
-
-
 
 function loadTime() {
     dueDay = new Date(document.getElementById("deadline").value);
@@ -106,7 +166,8 @@ function uploadToFirebase() {
             vrijemeIzrade: dateTime,
             pitanja: questions,
             tvorac: user.uid,
-            trajanje: surveyLength
+            trajanje: surveyLength,
+            odabraneGrupe: chosenGroups
         });
         reload();
     }
@@ -124,6 +185,23 @@ function createGroup() {
             ime: groupName,
             kod: groupCode
         });
+        document.getElementById("groups").innerHTML = "";
+        var h4 = document.createElement('h4');
+        h4.innerHTML = "Kod za pristup grupi:"
+        h4.classList.add("diplay-4");
+        h4.classList.add("row");
+        h4.classList.add("justify-content-center");
+        h4.classList.add("align-self-center");
+        var h2 = document.createElement("h2");
+        h2.classList.add("diplay-4");
+        h2.classList.add("row");
+        h2.classList.add("justify-content-center");
+        h2.classList.add("align-self-center");
+        h2.innerHTML = groupCode;
+        document.getElementById("groups").appendChild(h4);
+        document.getElementById("groups").appendChild(h2);
+        document.getElementById("newGroupBtn").remove();
+
     } else
         alert("Niste unjeli ime grupe")
 }
@@ -144,6 +222,7 @@ function loadGroups() {
         thName.innerHTML = "Naziv grupe";
         var thCode = document.createElement('th');
         thCode.innerHTML = "Kod grupe";
+
         tr.appendChild(thName);
         tr.appendChild(thCode);
         table.appendChild(tr);
@@ -154,12 +233,21 @@ function loadGroups() {
             tdName.innerHTML = childSnapshot.child("ime").val();
             var tdCode = document.createElement('td');
             tdCode.innerHTML = childSnapshot.child("kod").val();
+
+            var deleteGroupBtn = document.createElement('button');
+            deleteGroupBtn.classList.add('btn');
+            deleteGroupBtn.classList.add('btn-danger');
+            deleteGroupBtn.classList.add('mt-1');
+            deleteGroupBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg>';
+            deleteGroupBtn.id = childSnapshot.key;
+            deleteGroupBtn.setAttribute('onclick', "deleteGroup(this.id); loadGroups();");
             tr.appendChild(tdName);
             tr.appendChild(tdCode);
+
+            tr.appendChild(deleteGroupBtn);
             table.appendChild(tr);
             if (tdName.length != 0 && tdCode.length != 0)
                 checkIfAnyGroupExists = true;
-
         });
         if (checkIfAnyGroupExists)
             document.getElementById("table").appendChild(table);
@@ -170,7 +258,6 @@ function loadGroups() {
             document.getElementById("table").appendChild(h4);
         }
     });
-
 }
 
 function createQuestionForm() {
