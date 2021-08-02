@@ -62,26 +62,6 @@ function loadDropdown() {
             if (groupName.length != 0 && groupName.length != 0)
                 checkIfAnyGroupExists = true;
         });
-        if (checkIfAnyGroupExists) {
-            var a = document.createElement('a');
-            a.classList.add('dropdown-item');
-            var div = document.createElement('div');
-            div.classList.add('custom-control');
-            div.classList.add('custom-checkbox');
-            var input = document.createElement('input');
-            input.type = "checkbox";
-            input.classList.add('custom-control-input');
-            input.id = "allOptions";
-            input.value = "allOptions";
-            var label = document.createElement('label');
-            label.classList.add('custom-control-label');
-            label.setAttribute("for", "allOptions");
-            label.innerHTML = "Sve grupe";
-            div.appendChild(input);
-            div.appendChild(label);
-            a.appendChild(div);
-            document.getElementById('chooseGroups').appendChild(a);
-        }
     });
 }
 

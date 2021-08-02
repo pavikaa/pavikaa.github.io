@@ -10,7 +10,26 @@
 </head>
 
 <body>
-  <button type="button" class="btn btn-dark float-right mr-5 mt-4" onclick="logout();">Odjava</button>
+  <div class="fixed-top">
+    <div class="collapse" id="navbarSurveys">
+      <div class="bg-dark p-4">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" data-toggle="modal" data-target="#groupsModal" onclick="loadGroups();">Upravljanje grupama</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" onclick="logout();">Odjava</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <nav class="navbar navbar-dark bg-dark">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSurveys" aria-controls="navbarSurveys" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </nav>
+  </div>
+
   <div class="jumbotron">
     <h1 class="display-4">Dobro došli</h1>
     <p class="lead">Kreirajte novu anketu ili pregledajte provedene ankete.</p>
@@ -21,11 +40,6 @@
         Kreirajte anketu
       </button>
       <a class="btn btn-primary btn-lg ml-3" href="surveyhistory.html" role="button">Povijest anketiranja</a>
-
-      <button type="button" class="btn btn-primary btn-lg ml-3" data-toggle="modal" data-target="#groupsModal"
-        onclick="loadGroups();">
-        Upravljanje grupama
-      </button>
 
     </p>
   </div>
