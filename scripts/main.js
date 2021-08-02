@@ -28,6 +28,7 @@ function reload() {
 function deleteGroup(id) {
     var user = firebase.auth().currentUser;
     firebase.database().ref().child("grupe").child(user.uid).child(id).remove();
+    alert('Grupa uspješno obrisana.');
 
 }
 
