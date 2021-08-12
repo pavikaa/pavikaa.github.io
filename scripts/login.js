@@ -17,7 +17,6 @@ function login() {
   var userPass = document.getElementById("password").value;
   if (userEmail != "" && userPass != "") {
     firebase.auth().signInWithEmailAndPassword(userEmail, userPass).catch(function (error) {
-      var errorCode = error.code;
       var errorMessage = error.message;
       window.alert("Error : " + errorMessage);
     });

@@ -6,6 +6,7 @@ function deleteSurvey(id) {
 }
 
 function loadSurveys() {
+    var checkIfSurveysExist = false;
     document.getElementById("surveyList").innerHTML = "";
     firebase.database().ref().child("ankete").once("value", function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
@@ -26,8 +27,13 @@ function loadSurveys() {
                 });
                 listItem.innerHTML = truncateString(title, 30);
                 document.getElementById("surveyList").appendChild(listItem);
+                checkIfSurveysExist = true;
             }
         });
+        if (!checkIfSurveysExist) {
+            window.location.href = '/pages/main.html'
+            window.alert("Nemate niti jednu kreiranu anketu.");
+        }
     });
 
 }

@@ -10,7 +10,6 @@ function logout() {
 }
 
 function reload() {
-    document.getElementById("deadline").value = "";
     document.getElementById("length").value = "";
 
     answerCounter = 0;
@@ -112,18 +111,6 @@ function loadQuestion() {
 }
 
 function loadTime() {
-    dueDay = new Date(document.getElementById("deadline").value);
-
-    var dDate = dueDay.getDate() + '.' + (dueDay.getMonth() + 1) + '.' + dueDay.getFullYear();
-    var dTime = dueDay.getHours() + ":" + dueDay.getMinutes();
-
-    dueDate = dDate + ' ' + dTime;
-
-    var today = new Date();
-    var date = today.getDate() + '.' + (today.getMonth() + 1) + '.' + today.getFullYear();
-    var time = today.getHours() + ":" + today.getMinutes();
-
-    dateTime = date + ' ' + time;
     surveyLength = document.getElementById("length").value;
 }
 
@@ -143,8 +130,6 @@ function uploadToFirebase() {
     } else {
         database.ref('ankete/' + newSurveyKey).set({
             kod: code,
-            rokZaPredaju: dueDate,
-            vrijemeIzrade: dateTime,
             pitanja: questions,
             tvorac: user.uid,
             trajanje: surveyLength,
