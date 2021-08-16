@@ -36,11 +36,12 @@ function loadDropdown() {
     chosenGroups = [];
     var checkIfAnyGroupExists = false;
     var user = firebase.auth().currentUser;
-    var groupName;
+    var groupCodeF;
     firebase.database().ref().child("grupe").child(user.uid).once("value", function (snapshot) {
 
         snapshot.forEach(function (childSnapshot) {
             groupName = childSnapshot.child("ime").val();
+            groupCodeF = childSnapshot.child("kod").val();
             var a = document.createElement('a');
             a.classList.add('dropdown-item');
             var div = document.createElement('div');
@@ -49,7 +50,7 @@ function loadDropdown() {
             var input = document.createElement('input');
             input.type = "checkbox";
             input.classList.add('custom-control-input');
-            input.value = groupName;
+            input.value = groupCodeF;
             input.id = groupName;
             var label = document.createElement('label');
             label.classList.add('custom-control-label');
@@ -73,7 +74,7 @@ function addAnswer() {
 
     answerCounter++;
 
-    createQuestion();
+    createAnswerInput();
 }
 
 function newQuestion() {
@@ -103,10 +104,8 @@ function loadQuestion() {
     } else
         alert("Neka polja su prazna.");
     chosenGroups = [];
-    $("#chooseGroups input[type='checkbox']:checked").each((_, {
-        value
-    }) => {
-        chosenGroups.push(value);
+    $("#chooseGroups input[type='checkbox']:checked").each(function() {
+        chosenGroups.push(this.value);
     });
 }
 
@@ -238,10 +237,10 @@ function createQuestionForm() {
     document.getElementById("questions").appendChild(newQuestionInput);
     document.getElementById("answers").innerHTML = "";
 
-    createQuestion();
+    createAnswerInput();
 }
 
-function createQuestion() {
+function createAnswerInput() {
     var newAnswerDiv = document.createElement('div');
     newAnswerDiv.classList.add('input-group');
     newAnswerDiv.id = "answerGroup" + answerCounter;
