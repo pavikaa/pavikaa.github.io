@@ -35,7 +35,6 @@ function loadSurveys() {
             window.alert("Nemate niti jednu kreiranu anketu.");
         }
     });
-
 }
 
 function truncateString(str, num) {
@@ -64,7 +63,6 @@ function loadStats() {
                     var question;
                     var answers = [];
                     var results = [];
-
                     question = questionSnapshot.child("0").val();
                     questionSnapshot.child("1").forEach(function (answersSnapshot) {
                         var answer = answersSnapshot.child("0").val();
@@ -99,7 +97,6 @@ function loadStats() {
                                         text: question
                                     }
                                 }
-
                             }
                         });
                         questionNumber++;
@@ -107,7 +104,6 @@ function loadStats() {
                 });
             }
         });
-
         if (!checkIfResultsExist) {
             var h4 = document.createElement('h4');
             h4.classList.add('text-center');

@@ -11,11 +11,8 @@ function logout() {
 
 function reload() {
     document.getElementById("length").value = "";
-
     answerCounter = 0;
-
     createQuestionForm();
-
     questions = [];
     answers = [];
     chosenGroups = [];
@@ -28,7 +25,6 @@ function deleteGroup(id) {
     var user = firebase.auth().currentUser;
     firebase.database().ref().child("grupe").child(user.uid).child(id).remove();
     alert('Grupa uspješno obrisana.');
-
 }
 
 function loadDropdown() {
@@ -38,7 +34,6 @@ function loadDropdown() {
     var user = firebase.auth().currentUser;
     var groupCodeF;
     firebase.database().ref().child("grupe").child(user.uid).once("value", function (snapshot) {
-
         snapshot.forEach(function (childSnapshot) {
             groupName = childSnapshot.child("ime").val();
             groupCodeF = childSnapshot.child("kod").val();
@@ -71,15 +66,12 @@ function addAnswer() {
     document.getElementById("answerGroup" + (answerCounter) + "Btn").classList.remove('btn-success');
     document.getElementById("answerGroup" + (answerCounter) + "Btn").classList.add('btn-danger');
     document.getElementById("answerGroup" + (answerCounter) + "Btn").setAttribute('onclick', "removeAnswer(this.id);");
-
     answerCounter++;
-
     createAnswerInput();
 }
 
 function newQuestion() {
     loadQuestion();
-
     if (questions.length != 0) {
         answerCounter = 0;
         createQuestionForm();
@@ -89,7 +81,6 @@ function newQuestion() {
 
 function loadQuestion() {
     var question = document.getElementById("question").value;
-
     for (var i = 0; i <= answerCounter; i++) {
         var answer = document.getElementById("answer" + i);
         if (answer) {
@@ -104,7 +95,7 @@ function loadQuestion() {
     } else
         alert("Neka polja su prazna.");
     chosenGroups = [];
-    $("#chooseGroups input[type='checkbox']:checked").each(function() {
+    $("#chooseGroups input[type='checkbox']:checked").each(function () {
         chosenGroups.push(this.value);
     });
 }
@@ -117,11 +108,8 @@ function uploadToFirebase() {
     var database = firebase.database();
     var user = firebase.auth().currentUser;
     var code = makecode(6, "Survey");
-
     document.getElementById("code").innerHTML = code;
-
     var newSurveyKey = firebase.database().ref().child('ankete').push().key;
-
     if (questions.length == 0) {
         alert("Ostavili ste neka polja prazna, molim provjerite.")
         code = "Pokušajte ponovo."
@@ -140,7 +128,6 @@ function uploadToFirebase() {
 
 function createGroup() {
     var groupName = document.getElementById("groupName").value;
-
     var groupCode = makecode(6, "Group");
     var database = firebase.database();
     var user = firebase.auth().currentUser;
@@ -187,18 +174,15 @@ function loadGroups() {
         thName.innerHTML = "Naziv grupe";
         var thCode = document.createElement('th');
         thCode.innerHTML = "Kod grupe";
-
         tr.appendChild(thName);
         tr.appendChild(thCode);
         table.appendChild(tr);
-
         snapshot.forEach(function (childSnapshot) {
             var tr = document.createElement('tr');
             var tdName = document.createElement('td');
             tdName.innerHTML = childSnapshot.child("ime").val();
             var tdCode = document.createElement('td');
             tdCode.innerHTML = childSnapshot.child("kod").val();
-
             var deleteGroupBtn = document.createElement('button');
             deleteGroupBtn.classList.add('btn');
             deleteGroupBtn.classList.add('btn-danger');
@@ -208,7 +192,6 @@ function loadGroups() {
             deleteGroupBtn.setAttribute('onclick', "deleteGroup(this.id); loadGroups();");
             tr.appendChild(tdName);
             tr.appendChild(tdCode);
-
             tr.appendChild(deleteGroupBtn);
             table.appendChild(tr);
             if (tdName.length != 0 && tdCode.length != 0)
@@ -233,10 +216,8 @@ function createQuestionForm() {
     newQuestionInput.placeholder = "Unesite pitanje";
     newQuestionInput.id = "question"
     newQuestionInput.autocomplete = "off";
-
     document.getElementById("questions").appendChild(newQuestionInput);
     document.getElementById("answers").innerHTML = "";
-
     createAnswerInput();
 }
 
@@ -244,7 +225,6 @@ function createAnswerInput() {
     var newAnswerDiv = document.createElement('div');
     newAnswerDiv.classList.add('input-group');
     newAnswerDiv.id = "answerGroup" + answerCounter;
-
     var newAnswerInput = document.createElement('input');
     newAnswerInput.classList.add('form-control');
     newAnswerInput.classList.add('mt-2');
@@ -252,18 +232,15 @@ function createAnswerInput() {
     newAnswerInput.type = "text";
     newAnswerInput.autocomplete = "off";
     newAnswerInput.id = "answer" + answerCounter;
-
     var newButtonSpan = document.createElement('span');
     newButtonSpan.classList.add('input-group-btn');
     newButtonSpan.classList.add('mt-2');
     newButtonSpan.classList.add('ml-1');
-
     var newButton = document.createElement('button');
     newButton.classList.add('btn');
     newButton.classList.add('btn-success');
     newButton.setAttribute('onclick', "addAnswer();");
     newButton.id = "answerGroup" + answerCounter + "Btn";
-
     var newSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     newSvg.classList.add('bi');
     newSvg.classList.add('bi-plus-lg');
@@ -273,13 +250,10 @@ function createAnswerInput() {
     newSvg.setAttribute('fill', "currentColor");
     newSvg.setAttribute('viewBox', "0 0 16 16");
     newSvg.innerHTML = '<path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"></path>';
-
     newButton.appendChild(newSvg);
     newButtonSpan.appendChild(newButton);
-
     newAnswerDiv.appendChild(newAnswerInput);
     newAnswerDiv.appendChild(newButtonSpan);
-
     document.getElementById("answers").appendChild(newAnswerDiv);
 }
 
@@ -306,7 +280,6 @@ function makecode(length, purpose) {
                         makecode(length, "Group");
                 });
             });
-
         });
     }
     return result;

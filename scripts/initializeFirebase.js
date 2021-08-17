@@ -8,5 +8,3 @@ const firebaseConfig = {
   appId: "1:1065651984396:web:cf13394f1118d7d233f629"
 };
 firebase.initializeApp(firebaseConfig);
-
-
